@@ -283,10 +283,128 @@ contactForm.addEventListener('submit', (e) => {
 
 // Phone number formatting
 const phoneInput = document.getElementById('phoneNumber');
-phoneInput.addEventListener('input', (e) => {
-  let value = e.target.value.replace(/\D/g, '');
-  if (value.length >= 10) {
-    value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+if (phoneInput) {
+  phoneInput.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 10) {
+      value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+    }
+    e.target.value = value;
+  });
+}
+
+// Prevent zoom on input focus for iOS
+if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+  const viewportMeta = document.querySelector('meta[name="viewport"]');
+  if (viewportMeta) {
+    const originalContent = viewportMeta.getAttribute('content');
+    
+    document.querySelectorAll('input, textarea, select').forEach(input => {
+      input.addEventListener('focus', () => {
+        viewportMeta.setAttribute('content', originalContent + ', maximum-scale=1.0');
+      });
+      
+      input.addEventListener('blur', () => {
+        viewportMeta.setAttribute('content', originalContent);
+      });
+    });
   }
-  e.target.value = value;
+}
+
+// Enhanced touch interactions for mobile
+if (isMobileDevice()) {
+  // Add touch feedback to buttons
+  document.querySelectorAll('.btn, .contact-btn, .social-link').forEach(element => {
+    element.addEventListener('touchstart', function() {
+      this.style.transform = 'scale(0.95)';
+    });
+    
+    element.addEventListener('touchend', function() {
+      setTimeout(() => {
+        this.style.transform = '';
+      }, 100);
+    });
+  });
+
+  // Improve portfolio item touch interaction
+  document.querySelectorAll('.portfolio-item').forEach(item => {
+    let touchStartTime;
+    
+    item.addEventListener('touchstart', function() {
+      touchStartTime = Date.now();
+      this.classList.add('mobile-hover');
+    });
+    
+    item.addEventListener('touchend', function() {
+      const touchDuration = Date.now() - touchStartTime;
+      if (touchDuration < 200) {
+        // Quick tap - keep hover state briefly
+        setTimeout(() => {
+          this.classList.remove('mobile-hover');
+        }, 2000);
+      }
+    });
+  });
+
+  // Service card touch interaction
+  document.querySelectorAll('.service-card').forEach(card => {
+    let touchStartTime;
+    
+    card.addEventListener('touchstart', function() {
+      touchStartTime = Date.now();
+      this.classList.add('mobile-hover');
+    });
+    
+    card.addEventListener('touchend', function() {
+      const touchDuration = Date.now() - touchStartTime;
+      if (touchDuration < 200) {
+        setTimeout(() => {
+          this.classList.remove('mobile-hover');
+        }, 2000);
+      }
+    });
+  });
+}
+
+// Optimize scroll performance on mobile
+let ticking = false;
+let lastKnownScrollPosition = 0;
+
+function handleScroll(scrollPos) {
+  // Your scroll-based animations here
+  const viewportHeight = window.innerHeight;
+  
+  if (isMobileDevice()) {
+    document.querySelectorAll('.service-card, .portfolio-item').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const isInViewport = rect.top < viewportHeight * 0.8 && rect.bottom > viewportHeight * 0.2;
+      
+      if (isInViewport && !el.classList.contains('mobile-hover')) {
+        el.classList.add('mobile-hover');
+      } else if (!isInViewport && el.classList.contains('mobile-hover')) {
+        el.classList.remove('mobile-hover');
+      }
+    });
+  }
+}
+
+window.addEventListener('scroll', () => {
+  lastKnownScrollPosition = window.scrollY;
+
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      handleScroll(lastKnownScrollPosition);
+      ticking = false;
+    });
+
+    ticking = true;
+  }
+});
+
+// Prevent double-tap zoom on buttons
+document.querySelectorAll('.btn, button, a').forEach(element => {
+  element.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    element.click();
+  }, { passive: false });
 });

@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes" />
+  <meta name="theme-color" content="#0B0B0B" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>SocialFACE - No.1 Social Media Marketer Globally</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -41,7 +44,7 @@
           Elevate Your <span class="text-gradient">Digital Presence</span>
         </h1>
         <p class="hero-subtitle">No.1 Social Media Marketing Agency Trusted by Celebrities, Influencers & Global Brands</p>
-        <div class="hero-cta"></div>
+        <div class="hero-cta">
           <a href="#contact" class="btn btn-primary">Start Your Journey</a>
           <a href="#portfolio" class="btn btn-secondary">View Our Work</a>
         </div>
@@ -398,7 +401,7 @@
                   </svg>
                   Full Name *
                 </label>
-                <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" autocomplete="name" required>
               </div>
               <div class="form-group">
                 <label for="phoneNumber">
@@ -407,7 +410,7 @@
                   </svg>
                   Phone Number *
                 </label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+91 xxxxxxxxxx" required>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+91 xxxxxxxxxx" autocomplete="tel" inputmode="tel" required>
               </div>
             </div>
             
@@ -420,7 +423,7 @@
                   </svg>
                   Email Address *
                 </label>
-                <input type="email" id="emailAddress" name="emailAddress" placeholder="your.email@example.com" required>
+                <input type="email" id="emailAddress" name="emailAddress" placeholder="your.email@example.com" autocomplete="email" inputmode="email" required>
               </div>
               <div class="form-group">
                 <label for="projectDate">
